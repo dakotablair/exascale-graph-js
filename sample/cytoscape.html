@@ -1,0 +1,362 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+
+  <!-- Latest compiled and minified CSS -->
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css" integrity="sha384-HSMxcRTRxnN+Bdg0JdbxYKrThecOKuH5zCYotlSAcp1+c8xmyTe9GYg1l9a69psu" crossorigin="anonymous">
+
+  <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+  <script src="https://code.jquery.com/jquery-1.12.4.min.js" integrity="sha384-nvAa0+6Qg9clwYCGGPpDQLVpLNn0fRaROjHqs13t4Ggj3Ez50XnGQqc/r8MhnRDZ" crossorigin="anonymous"></script>
+
+  <!-- Latest compiled and minified JavaScript -->
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha384-aJ21OjlMXNL5UyIl/XNwTMqvzeRMZH2w8c5cRVpzpU8Y5bApTppSuUkhZXN0VxHd" crossorigin="anonymous"></script>
+
+
+  <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/bs-3.3.7/jq-3.3.1/jszip-2.5.0/dt-1.10.21/b-1.6.2/b-colvis-1.6.2/b-html5-1.6.2/b-print-1.6.2/cr-1.5.2/fh-3.1.7/sc-2.0.2/sp-1.1.0/sl-1.3.1/datatables.min.css">
+
+  <link rel="stylesheet" type="text/css" href="/narrative/static/style/style.min.css">
+  <link rel="stylesheet" type="text/css" href="/narrative/static/kbase/css/kbaseStylesheet.css">
+
+  <script type="text/javascript" src="kb-cytoscape.umd.js"></script>
+
+<style>
+.kb-html-report {
+    padding: 0 2rem;
+}
+.kb-html-report > .panel {
+    border-width: 0;
+}
+.kb-html-report .nav.nav-tabs {
+    margin: 0 -2rem 1rem;
+    padding-left: 2rem;
+}
+.progress-bar-null {
+    background-color: #efefef;
+}
+.tabular {
+  overflow: hidden;
+  z-index: 1;
+  position: relative;
+}
+
+.tabular dl, .tabular dt, .tabular dd {
+  margin: 0;
+  padding: 0;
+  position: relative;
+}
+
+.tabular dt, .tabular dd {
+  display: inline-block;
+  vertical-align: top;
+  padding: 12px 2%;
+  padding: 0.75rem 2%;
+  position: relative;
+  border-top: 1px solid #ccc;
+}
+
+.tabular dt {
+  width: 29%;
+}
+
+.tabular dd {
+  width: 69%;
+}
+
+.tabular dd + dd {
+  border-top-color: #fff;
+}
+
+.tabular dt:after, .tabular dd:after {
+  content: " ";
+  position: absolute;
+  display: block;
+  left: -999em;
+  top: -2px;
+  bottom: 0;
+  right: -999em;
+  z-index: -1;
+}
+
+.tabular dd + dd {
+  margin-left: 30%;
+}
+
+
+.radio-toggle input[type="radio"] {
+  opacity: 0;
+  position: fixed;
+  width: 0;
+}
+
+.radio-toggle label {
+  border-style: solid;
+  border-width: 2px;
+}
+
+.radio-toggle input[type="radio"]:focus + label {
+  border-style: dashed;
+}
+
+.radio-toggle input[type="radio"]:checked + label {
+  border-style: dashed;
+}
+
+.nav-link .badge {
+  margin-left: 7px;
+}
+
+
+</style>
+  <title>Cytoscape Demo</title>
+</head>
+<body>
+<div class="container-fluid kb-html-report">
+
+  <div class="panel panel-default">
+    <h1>
+      Cytoscape Demo
+    </h1>
+
+    <ul class="nav nav-tabs" role="tablist" id="navigation">
+<li class="nav-item">
+        <a class="nav-link" data-toggle="tab" role="tab"
+        href="#dataset_tab" id="dataset_tab-tab"
+        aria-controls="dataset_tab" aria-selected="true">Dataset Picker</a>
+    </li><li class="nav-item">
+        <a class="nav-link" data-toggle="tab" role="tab"
+        href="#node_metadata_tab" id="node_metadata_tab-tab"
+        aria-controls="node_metadata_tab" aria-selected="false">Node Metadata <span class="badge" id="node_count"></span></a>
+    </li><li class="nav-item">
+        <a class="nav-link" data-toggle="tab" role="tab"
+        href="#edge_metadata_tab" id="edge_metadata_tab-tab"
+        aria-controls="edge_metadata_tab" aria-selected="false">Edge Metadata <span class="badge" id="edge_count"></span></a>
+    </li><li class="nav-item">
+        <a class="nav-link" data-toggle="tab" role="tab"
+        href="#collection_tab" id="collection_tab-tab"
+        aria-controls="collection_tab" aria-selected="false">Collected Nodes <span class="badge" id="collection_count"></span></a>
+    </li><li class="nav-item">
+        <a class="nav-link" data-toggle="tab" role="tab"
+        href="#graph" id="graph-tab"
+        aria-controls="graph" aria-selected="false">Cytoscape</a>
+    </li>
+    </ul>
+    <div class="tab-content">
+<div class="tab-pane fade in active" role="tabpanel" id="dataset_tab" aria-labelledby="dataset_tab-tab">
+<div class="container-fluid">
+      <div class="row">
+        <div class="form-group" id="dataset--div">
+        <p>Query run: djornl_fetch_all</p>
+        <p>Query params:<p>
+        <pre>
+$VAR1 = {
+          'edge_types' => []
+        };
+
+        </pre>
+        <p>Results summary:</p>
+        <p>Nodes found: 210</p>
+        <p>Edges found: 765</p>
+        <p>Results as JSON: <a href="dataset.json">Results as JSON</a></p>
+        <p>Click the button to load the results:</p>
+          <div class="form-group">
+            <button id="dataset--button" class="btn dataset--button">
+              Load results
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+    </div><div class="tab-pane fade" role="tabpanel" id="node_metadata_tab" aria-labelledby="node_metadata_tab-tab">
+<table class="dataTable__table  table table-striped table-bordered " id="node_table" style="width: 100%"
+  >
+
+  </table>
+    </div><div class="tab-pane fade" role="tabpanel" id="edge_metadata_tab" aria-labelledby="edge_metadata_tab-tab">
+<table class="dataTable__table  table table-striped table-bordered " id="edge_table" style="width: 100%"
+  >
+
+  </table>
+    </div><div class="tab-pane fade" role="tabpanel" id="collection_tab" aria-labelledby="collection_tab-tab">
+<table class="dataTable__table  table table-striped table-bordered " id="collection_table" style="width: 100%"
+  >
+
+  </table>
+    </div><div class="tab-pane fade" role="tabpanel" id="graph" aria-labelledby="graph-tab">
+<div class="container-fluid">
+      <div class="row" id="cy">
+        <div id="cy--graph" style="height: 1000px" class="col-md-10"></div>
+        <div id="cy--controls" class="col-md-2">
+          <div class="form-group" id="layout_fit--div">
+            <button id="render_chart--button" class="btn render_chart--button"
+              data-action="renderData"
+              data-target="cy">
+              Render chart!
+            </button>
+            <button id="render_chart--button" class="btn render_chart--button"
+              data-action="renderCollection"
+              data-target="cy">
+              Render collection!
+            </button>
+          </div>
+          <h2>Layout</h2>
+          <div class="form-group" id="layout--div">
+            <select id="layout--select" class="form-control layout--select" name="layout"
+              data-action="setLayout"
+              data-target="cy">
+            </select>
+          </div>
+          <div class="form-group" id="layout_fit--div">
+            <button id="layout_fit--button" class="btn layout_fit--button col-md-6"
+              data-action="fit"
+              data-target="cy">
+              Fit to viewport
+            </button>
+            <button id="layout_reset--button" class="btn layout_reset--button col-md-6"
+              data-action="reset"
+              data-target="cy">
+              Reset layout
+            </button>
+          </div>
+          <h2>Selection <span class="badge" id="selection_count"></span></h2>
+          <div class="form-group">
+            <button id="select_all--button" class="btn"
+              data-action="selectAllNodes"
+              data-target="cy">
+              Select All
+            </button>
+            <button id="deselect_all--button" class="btn"
+              data-action="deselectAllNodes"
+              data-target="cy">
+              Select None
+            </button>
+            <button id="select_invert--button" class="btn"
+              data-action="invertNodeSelection"
+              data-target="cy">
+              Invert selection
+            </button>
+            <button id="select_neighbourhood--button" class="btn"
+              data-action="getNeighbourhood"
+              data-target="cy">
+              Get neighbourhood of selected nodes
+            </button>
+          </div>
+          <div class="form-group">
+
+            <div class="btn-group radio-toggle">
+              <p class="radio-toggle--title">Box selection</p>
+
+              <label class="btn btn-primary radio-toggle--label" for="boxSelectionEnabled--0"><input type="radio" class="radio-toggle--input" name="boxSelectionEnabled" value="0" id="boxSelectionEnabled--0"  />
+
+              Off
+              </label>
+
+              <label class="btn btn-primary radio-toggle--label" for="boxSelectionEnabled--1"><input type="radio" class="radio-toggle--input" name="boxSelectionEnabled" value="1" id="boxSelectionEnabled--1" checked />
+
+              On
+              </label>
+
+            </div>
+
+            <div class="btn-group radio-toggle">
+              <p class="radio-toggle--title">Multiple selection</p>
+
+              <label class="btn btn-primary radio-toggle--label" for="selectionType--single"><input type="radio" class="radio-toggle--input" name="selectionType" value="single" id="selectionType--single"  />
+
+              Off
+              </label>
+
+              <label class="btn btn-primary radio-toggle--label" for="selectionType--additive"><input type="radio" class="radio-toggle--input" name="selectionType" value="additive" id="selectionType--additive" checked />
+
+              On
+              </label>
+
+            </div>
+
+            <div class="btn-group radio-toggle">
+              <p class="radio-toggle--title">Panning</p>
+
+              <label class="btn btn-primary radio-toggle--label" for="userPanningEnabled--0"><input type="radio" class="radio-toggle--input" name="userPanningEnabled" value="0" id="userPanningEnabled--0"  />
+
+              Off
+              </label>
+
+              <label class="btn btn-primary radio-toggle--label" for="userPanningEnabled--1"><input type="radio" class="radio-toggle--input" name="userPanningEnabled" value="1" id="userPanningEnabled--1" checked />
+
+              On
+              </label>
+
+            </div>
+
+            <div class="btn-group radio-toggle">
+              <p class="radio-toggle--title">Zooming</p>
+
+              <label class="btn btn-primary radio-toggle--label" for="userZoomingEnabled--0"><input type="radio" class="radio-toggle--input" name="userZoomingEnabled" value="0" id="userZoomingEnabled--0"  />
+
+              Off
+              </label>
+
+              <label class="btn btn-primary radio-toggle--label" for="userZoomingEnabled--1"><input type="radio" class="radio-toggle--input" name="userZoomingEnabled" value="1" id="userZoomingEnabled--1" checked />
+
+              On
+              </label>
+
+            </div>
+
+          </div>
+          <h2>Node Bag</h2>
+          <div class="form-group">
+            <button id="collection_add--button" class="btn" type="button"
+              data-action="collectSelectedGraphNodes"
+              data-target="cy">
+              Add selected nodes
+            </button>
+            <button id="collection_remove--button" class="btn" type="button"
+              data-action="discardSelectedGraphNodes"
+              data-target="cy">
+              Remove selected nodes
+            </button>
+          </div>
+          <!-- h2>Export</h2>
+          <div class="form-group">
+            <button id="export_json--button" class="btn">
+              Export graph as JSON
+            </button>
+          </div -->
+        </div>
+      </div>
+    </div>
+    <!-- Modal
+    <div class="modal fade" id="collectionModal" tabindex="-1" role="dialog" aria-labelledby="collectionModalLabel">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h3 class="modal-title" id="collectionModalLabel">Collected Nodes</h3>
+          </div>
+          <div class="modal-body">
+            <table id="table_collection" class="dataTable__table table table-striped table-bordered"></table>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+          </div>
+        </div>
+      </div>
+    </div> -->
+    </div>
+    </div>
+  </div>
+<script>
+  "use strict";
+  $(document).ready( () => {
+
+    const datasetConfig = {"djornl_edge":{"_key":{"title":"Key","format":"regex","pattern":"^(\\S+__){3}(\\S+)$","type":"string"},"edge_type":{"description":"Edge types in Dan Jacobson Arabidopsis Exascale dataset","oneOf":[{"title":"AraGWAS phenotype association","description":"GWAS associations produced by analyzing a subset of phenotypes and SNPs in the Arabidopsis 1001 Genomes database. Edge values are significant association scores after FDR correction.","const":"phenotype-association_AraGWAS"},{"title":"AraNetv2 pairwise gene coexpression","description":"A subset of pairwise gene coexpression values from the Arabidopsis AraNetv2 database. The LLS scores that serve as edge values were calculated from Pearson correlation coefficients to normalize the data for comparison across studies and different types of data layers (Lee et al, 2015).","const":"pairwise-gene-coexpression_AraNet_v2"},{"const":"domain-co-occurrence_AraNet_v2","description":"A layer of protein domain co-occurrence values from the Arabidopsis AraNetv2 database. The LLS scores that serve as edge values were calculated from weighted mutual information scores to normalize the data for comparison across studies and different types of data layers (Lee et al, 2015).","title":"AraNetv2 domain co-occurrence"},{"const":"protein-protein-interaction_high-throughput_AraNet_v2","description":"Log likelihood score. A layer of protein-protein interaction values derived from four high-throughput PPI screening experiments; from the Arabidopsis AraNetv2 database. The LLS scores that serve as edge values were calculated to normalize the data for comparison across studies and different types of data layers (Lee et al, 2015).","title":"AraNetv2 high-throughput protein-protein interaction"},{"const":"protein-protein-interaction_literature-curated_AraNet_v2","title":"AraNetv2 literature-curated protein-protein interaction","description":"A layer of protein-protein interaction values from literature-curated small- to medium-scale experimental data; from the Arabidopsis AraNetv2 database. The LLS scores that serve as edge values were calculated to normalize the data for comparison across studies and different types of data layers (Lee et al, 2015)."},{"title":"BIOGRID ORGANISM Arabidopsis thaliana Columbia 3.5.188 tab3 PPI","description":"BioGRID interactions are relationships between two proteins or genes; the term 'interaction' includes direct physical binding of two proteins, and co-existence in a stable complex and genetic interaction. https://wiki.thebiogrid.org/doku.php/experimental_systems.","const":"protein-protein-interaction_biogrid_date/release3.5.188"},{"description":"The interactions database includes all interactions present at the Arabidopsis thaliana Protein Interactome Database, the Predicted Interactome for Arabidopsis, Arabidopsis protein-protein interaction data curated from the literature by TAIR curators, BIOGRID and IntAct. https://atpin.bioinfoguy.net/cgi-bin/atpin.pl","title":"AtPIN PPI","const":"protein-protein-interaction_AtPIN"},{"const":"protein-protein-interaction_Mentha_A_thaliana_3702_040319","title":"Mentha AT 3702 040319 PPI","description":"Mentha archives evidence collected from different sources and presents these data in a complete and comprehensive way. Data comes from manually curated protein-protein interaction databases that have adhered to the IMEx consortium and assigns to each interaction a reliability score that takes into account all the supporting evidence. https://mentha.uniroma2.it/about.php"},{"description":"Literature curated PPI of A. thaliana. https://www.inetbio.org/aranet/dl.php?f=AT-LC","title":"AraNetv2 subnet AT-LC PPI","const":"protein-protein-interaction_literature_curated_AraNet_v2_subnet"},{"title":"Wu2016 s015 Gene-to-Metab GeneToPhenotype","description":"GWAS hits ftom a Gene-to-Metaboiltes GWAS. Phenotypes (metabolites) have a unique ID from the Wu 2016 study (doi:10.1371/journal.pgen.1006363) and need to be given our own UID for future use.","const":"phenotype-association_GWAS_gene_to_metabolite_10.1371/journal.pgen.1006363"},{"const":"phenotype-association_AraGWAS_subnet_permsig_geni","title":"AraGWAS subnet permsig geni GeneToPhenotype","description":"Phenotypes mapped to SNP position and GeneID if available from AraGWAS database filtered for overFDR threshold."},{"description":"Contains literature mined and manually curated TF regulatory interactions for A.thaliana from 1701 TFFs from PlantTFDB 2.0 and 4663 TF-associated interactions. These were manually filtered (e.g. FPs, PPI interactions removed). They then added some from other sources. Downloaded from http://atrm.cbi.pku.edu.cn/download.php","title":"ATRM TF to Target LitCurated 01082020 TranscriptionFactorToGene","const":"transcription-factor-regulatory-interaction_literature_curated_ATRM_01082020"}],"title":"Edge Type","$schema":"http://json-schema.org/draft-07/schema#","name":"edge_type","type":"string"},"score":{"title":"Edge Score (Weight)","type":"number"},"directed":{"default":false,"type":"boolean","title":"Directed edge","description":"Whether or not the edge is directed"},"_to":{"type":"string","title":"Node ID","pattern":"^\\S{2,}.*$","format":"regex"},"_from":{"type":"string","title":"Node ID","format":"regex","pattern":"^\\S{2,}.*$"}},"djornl_node":{"_key":{"format":"regex","pattern":"^\\S{2,}.*$","title":"Key","examples":["AT1G01010","As2"],"type":"string"},"pheno_pto_name":{"type":"string","title":"PTO name","description":"Plant Trait Ontology name","examples":["arsenic concentration"]},"pheno_aragwas_id":{"type":"string","examples":["10.21958/phenotype:67"],"title":"AraGWAS ID"},"mapman_description":{"title":"Mapman description","examples":["transcription factor (NAC) (original description: pep chromosome:TAIR10:1:3631:5899:1 gene:AT1G01010 transcript:AT1G01010.1 gene_biotype:protein_coding transcript_biotype:protein_coding gene_symbol:NAC001 description:NAC domain-containing protein 1 [Source:UniProtKB/Swiss-Prot;Acc:Q0WV96])"],"type":"string"},"go_description":{"title":"GO descriptions","examples":["DNA-binding transcription factor activity"],"type":"string"},"pheno_reference":{"type":"string","title":"Phenotype reference","examples":["Atwell et. al, Nature 2010"]},"pheno_description":{"examples":["Arsenic concentrations in leaves, grown in soil. Elemental analysis was performed with an ICP-MS (PerkinElmer). Sample normalized to calculated weights as described in Baxter et al., 2008"],"title":"Phenotype description","type":"string"},"node_type":{"type":"string","$schema":"http://json-schema.org/draft-07/schema#","name":"node_type","examples":["gene","phenotype"],"description":"Node types in Dan Jacobson Exascale dataset","oneOf":[{"const":"gene","title":"Gene"},{"title":"Phenotype","const":"pheno"}],"title":"Node Type"},"pheno_pto_description":{"type":"string","examples":["A mineral and ion content related trait (TO:0000465) which is the concentration of arsenic (CHEBI:22632) in some plant structure (PO:0009011). [GR:Karthik]"],"description":"Plant Trait Ontology description","title":"PTO description"},"clusters":{"definitions":{"cluster_id":{"type":"string","examples":["markov_i2:1","markov_i4:5","markov_i6:3"],"format":"regex","pattern":"^\\w+:\\d+$"}},"title":"Clusters","description":"Clusters to which the node has been assigned","examples":[["markov_i2:1","markov_i4:5"],["markov_i6:3"]],"uniqueItems":true,"items":{"$ref":"#/definitions/cluster_id"},"type":"array"},"user_notes":{"type":"string","title":"User Notes","examples":["flowering time related"]},"mapman_name":{"title":"Mapman name","examples":[".RNA biosynthesis.transcriptional regulation.transcription factor (NAC)"],"type":"string"},"tair_computational_description":{"type":"string","title":"TAIR computational description","examples":["NAC domain containing protein 1;(source:Araport11)"]},"transcript":{"examples":["AT1G01010.1"],"title":"Transcript","type":"string"},"tair_short_description":{"title":"TAIR short description","examples":["NAC domain containing protein 1"],"type":"string"},"gene_full_name":{"type":"string","title":"Gene full name","examples":["NAC domain containing protein 1"]},"go_terms":{"type":"array","items":{"$ref":"#/definitions/go_term"},"uniqueItems":true,"title":"GO term IDs","definitions":{"go_term":{"type":"string","pattern":"^GO:\\d{7}$","format":"regex","examples":["GO:0003700","GO:0005515"]}}},"mapman_bin":{"type":"string","examples":["15.5.17"],"title":"Mapman bin"},"tair_curator_summary":{"type":"string","title":"TAIR curator summary","examples":["Encodes a plasma membrane-localized amino acid transporter likely involved in amino acid export in the developing seed."]},"gene_symbol":{"type":"string","examples":["NTL10"],"title":"Gene symbol"},"gene_model_type":{"title":"Gene model type","examples":["protein_coding"],"type":"string"}}}
+    initKbCytoscape(datasetConfig)
+
+    $('#navigation li:first-child a').tab('show')
+  })
+  </script>
+</div>
+</body>
+</html>
