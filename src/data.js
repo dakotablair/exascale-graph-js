@@ -45,15 +45,12 @@ function extractData(allData, edgeTypes = null) {
   // add all edges
   inputData['edges'].forEach((d) => {
     if (!edgeTypes || (edgeTypes && edgeTypes.indexOf(d.type) !== -1)) {
-      data.edge[d._id] = {
-        id: d._id,
-        // cytoscape uses 'source' and 'target' instead of '_to' / '_from'
-        source: d._from,
-        target: d._to,
-        edge_type: d.edge_type,
-        score: d.score,
-        data_type: 'edge',
-      };
+      // cytoscape uses 'source' and 'target' instead of '_to' / '_from'
+      d.source = d._from;
+      d.target = d._to;
+      d.data_type = 'edge';
+      d.id = d._id;
+      data.edge[d._id] = d;
 
       nodeType.forEach((n) => {
         data.nodeEdge[d[n]] ? data.nodeEdge[d[n]].push(d._id) : (data.nodeEdge[d[n]] = [d._id]);
