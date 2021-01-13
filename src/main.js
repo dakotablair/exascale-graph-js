@@ -13,8 +13,9 @@ export default function initKbCytoscape(datasetConfig) {
 
   activateControls();
   initTables(datasetConfig);
+  const cy = initCytoscape('cy');
 
-  window.kbase.cy = initCytoscape('cy');
+  window.kbase.cy = cy;
   window.kbase.headlessCy = initCytoscape();
   window.kbase.collection = new Collection(window.kbase.cy);
 }

@@ -1,5 +1,6 @@
 import $ from 'jquery';
 import cytoscape from 'cytoscape';
+import popper from 'cytoscape-popper';
 import layoutsAvailable from './cytoscapeLayouts';
 import kbCytoscape from './kbCytoscape';
 
@@ -13,10 +14,12 @@ function defaultStyle() {
     {
       selector: 'node',
       style: {
-        width: 10,
-        height: 10,
+        'background-color': 'mapData(id.length, 0, 15, #000, #4682b4)',
         shape: 'ellipse', // (ellipse/rectangle/round-diamond),
-        'background-color': '#4682b4',
+        'text-halign': 'center',
+        'text-outline-color': '#4682b4',
+        'text-outline-width': '2px',
+        'text-valign': 'center',
       },
     },
     {
@@ -34,7 +37,7 @@ function defaultStyle() {
       selector: 'node:selected',
       style: {
         'background-color': '#e77943',
-        //         'label': 'data(id)'
+        label: 'data(name)',
       },
     },
     {
@@ -48,8 +51,19 @@ function defaultStyle() {
     {
       selector: 'edge',
       style: {
-        width: 1,
-        'line-color': '#ccc',
+        'curve-style': 'bezier',
+        'font-weight': 'bold',
+        'line-color': 'data(edge_type_color)',
+        'text-outline-color': 'data(edge_type_color)',
+        'text-outline-width': '2px',
+        width: 3,
+        'z-index': 1,
+      },
+    },
+    {
+      selector: 'edge:selected',
+      style: {
+        label: 'data(edge_type)',
       },
     },
   ];
@@ -70,36 +84,35 @@ function cytoscapeConfig(containerID) {
     },
   };
 
-  if (containerID) {
-    // container to render in
-    config.container = document.getElementById(`${containerID}--graph`);
-    config.style = defaultStyle();
-    config.layout = 'null';
-
-    // check the current state of the controls
-    const layout_value = $(`#${containerID}--controls select[name=layout]`).length
-        ? $(`#${containerID}--controls select[name=layout]`)[0].value || 'null'
-        : 'null',
-      layouts = layoutsAvailable(),
-      radioControls = [
-        'userZoomingEnabled',
-        'userPanningEnabled',
-        'boxSelectionEnabled',
-        'selectionType',
-      ];
-
-    config.layout = layouts[layout_value];
-
-    radioControls.forEach((r) => {
-      let val = $(`input[name=${r}]:checked`).val();
-      if (val === '0') {
-        val = 0;
-      }
-      config[r] = val;
-    });
-  } else {
+  if (!containerID) {
     config.headless = true;
   }
+  // container to render in
+  config.container = document.getElementById(`${containerID}--graph`);
+  config.style = defaultStyle();
+  config.layout = 'null';
+
+  // check the current state of the controls
+  const layout_value = $(`#${containerID}--controls select[name=layout]`).length
+      ? $(`#${containerID}--controls select[name=layout]`)[0].value || 'null'
+      : 'null',
+    layouts = layoutsAvailable(),
+    radioControls = [
+      'userZoomingEnabled',
+      'userPanningEnabled',
+      'boxSelectionEnabled',
+      'selectionType',
+    ];
+
+  config.layout = layouts[layout_value];
+
+  radioControls.forEach((r) => {
+    let val = $(`input[name=${r}]:checked`).val();
+    if (val === '0') {
+      val = 0;
+    }
+    config[r] = val;
+  });
 
   return config;
 }
@@ -111,6 +124,9 @@ function cytoscapeConfig(containerID) {
  * @returns {cytoscape} cytoscapeInstance - cytoscape instance
  */
 function initCytoscape(containerID) {
+  if (!containerID) {
+    cytoscape.use(popper);
+  }
   cytoscape.use(kbCytoscape);
   const config = cytoscapeConfig(containerID),
     cytoscapeInstance = cytoscape(config);

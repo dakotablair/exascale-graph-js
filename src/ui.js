@@ -8,6 +8,7 @@ import { loadData } from './data';
 function addDatasetSelector() {
   $('#dataset--button').on('click keypress', () => {
     loadData();
+    console.log('data loaded. cy:', window.kbase.cy); // eslint-disable-line no-console
   });
 }
 
@@ -95,7 +96,7 @@ function activateControls() {
     }
   });
 
-  console.log('Controls activated');
+  console.log('Controls activated'); // eslint-disable-line no-console
 }
 
 export { activateControls };

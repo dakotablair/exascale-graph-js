@@ -128,6 +128,7 @@ function registerExtensions(cytoscape) {
    * @return {cytoscape} cytoscape object
    */
   cytoscape('core', 'renderData', function (data) {
+    console.log('data', data); // eslint-disable-line no-console
     if (this.nodes()) {
       this.nodes().remove();
     }
@@ -154,7 +155,7 @@ const kbCytoscape = function (cytoscape) {
 
 if (typeof cytoscape !== 'undefined') {
   // expose to global cytoscape (i.e. window.cytoscape)
-  kbCytoscape(cytoscape);
+  kbCytoscape(cytoscape); // eslint-disable-line no-undef
 }
 
 export default kbCytoscape;

@@ -7,6 +7,19 @@ import { refreshTable } from './tables';
  * @returns {object} dataObject
  */
 function dataObject() {
+  const colors_assigned = {};
+  const colors = (edge_type) => {
+    if (edge_type in colors_assigned) {
+      return colors_assigned[edge_type];
+    }
+    const n_colors = Object.keys(colors_assigned).length;
+    const value = ((n_colors % 8) + 1).toString(2);
+    const padded = '000'.slice(value.length) + value;
+    const color = `#${padded.replaceAll('1', 'f')}`;
+    colors_assigned[edge_type] = color;
+    console.log('colors_assigned', colors_assigned); // eslint-disable-line no-console
+    return color;
+  };
   return {
     node: {},
     edge: {},
@@ -14,12 +27,22 @@ function dataObject() {
     collection: {},
     nodeArr: function () {
       return Object.keys(this.nodeEdge).map((el) => {
-        return { data: { id: el } };
+        return {
+          data: {
+            id: el,
+            name: el.split('/')[1],
+          },
+        };
       });
     },
     edgeArr: function () {
       return Object.values(this.edge).map((el) => {
-        return { data: el };
+        return {
+          data: {
+            ...el,
+            edge_type_color: colors(el.edge_type),
+          },
+        };
       });
     },
   };
@@ -77,7 +100,7 @@ function extractData(allData, edgeTypes = null) {
   // ensure that all nodes used in the edges are present in data.node
   Object.keys(data.nodeEdge).forEach((n) => {
     if (!data.node[n]) {
-      console.error(`no node data for ${n}`);
+      console.error(`no node data for ${n}`); // eslint-disable-line no-console
     }
   });
   return data;
@@ -91,7 +114,7 @@ function extractData(allData, edgeTypes = null) {
 function renderData(data) {
   refreshTable();
 
-  console.log(`Found ${data.nodeArr().length} connected nodes and ${data.edgeArr().length} edges`);
+  console.log(`Found ${data.nodeArr().length} connected nodes and ${data.edgeArr().length} edges`); // eslint-disable-line no-console
 
   // set the collection data
   window.kbase.collection.data(data);

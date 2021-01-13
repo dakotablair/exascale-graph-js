@@ -13,6 +13,7 @@ export default [
       globals: {
         jquery: '$',
       },
+      sourcemap: 'inline',
     },
     plugins: [
       resolve(), // ensure Rollup can find node_modules
