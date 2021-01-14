@@ -7,15 +7,15 @@ import { refreshTable } from './tables';
  * @returns {object} dataObject
  */
 function dataObject() {
+  const color_palette = ['#210', '#c16', '#6ba', '#5ef', '#408', '#29d', '#f93', '#fdc'];
+  const label_palette = ['#fff', '#fff', '#000', '#000', '#fff', '#fff', '#000', '#000'];
   const colors_assigned = {};
   const colors = (edge_type) => {
     if (edge_type in colors_assigned) {
       return colors_assigned[edge_type];
     }
     const n_colors = Object.keys(colors_assigned).length;
-    const value = ((n_colors % 8) + 1).toString(2);
-    const padded = '000'.slice(value.length) + value;
-    const color = `#${padded.replaceAll('1', 'f')}`;
+    const color = color_palette[n_colors % color_palette.length];
     colors_assigned[edge_type] = color;
     console.log('colors_assigned', colors_assigned); // eslint-disable-line no-console
     return color;
@@ -37,10 +37,13 @@ function dataObject() {
     },
     edgeArr: function () {
       return Object.values(this.edge).map((el) => {
+        const edge_type_color = colors(el.edge_type);
+        const label_color = label_palette[color_palette.indexOf(edge_type_color)];
         return {
           data: {
             ...el,
-            edge_type_color: colors(el.edge_type),
+            edge_type_color,
+            label_text_color: label_color,
           },
         };
       });

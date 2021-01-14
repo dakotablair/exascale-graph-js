@@ -51,6 +51,7 @@ function defaultStyle() {
     {
       selector: 'edge',
       style: {
+        color: 'data(label_text_color)',
         'curve-style': 'bezier',
         'font-weight': 'bold',
         'line-color': 'data(edge_type_color)',
