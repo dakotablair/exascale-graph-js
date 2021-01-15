@@ -121,6 +121,30 @@ function registerExtensions(cytoscape) {
     return this;
   });
 
+  const registerNodeHandlers = (nodes) => {
+    console.log(`register node handlers for ${nodes.length} nodes`); // eslint-disable-line no-console
+    /*
+    nodes.forEach((node) => {
+      const popper = node.popper({
+        content: () => {
+          const div = document.createElement('div');
+
+          div.innerHTML = 'asdf';
+          div.id = 'node-node';
+
+          document.body.appendChild(div);
+
+          return div;
+        },
+      });
+      node.on('click', () => {});
+      const update = () => popper.update();
+      kbase.cy.on('zoom pan', update);
+      node.on('position', update);
+    });
+    */
+  };
+
   /**
    * add the supplied data to the chart, and run the layout if the container is defined
    *
@@ -128,13 +152,15 @@ function registerExtensions(cytoscape) {
    * @return {cytoscape} cytoscape object
    */
   cytoscape('core', 'renderData', function (data) {
+    // add any canvas/node/edge handlers here
     console.log('data', data); // eslint-disable-line no-console
     if (this.nodes()) {
       this.nodes().remove();
     }
     if (data && data.nodeArr() && data.edgeArr()) {
       this.add({ nodes: data.nodeArr(), edges: data.edgeArr() });
-
+      console.log('nodes', this.nodes); // eslint-disable-line no-console
+      registerNodeHandlers(this.nodes);
       if (this.container !== null) {
         // get the current layout
         const layoutValue = $(this.layoutSelector)[0].value || 'null';

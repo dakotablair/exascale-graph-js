@@ -64,7 +64,7 @@ function defaultStyle() {
     {
       selector: 'edge:selected',
       style: {
-        label: 'data(edge_type)',
+        label: 'data(edge_type_name)',
       },
     },
   ];
@@ -129,8 +129,8 @@ function initCytoscape(containerID) {
     cytoscape.use(popper);
   }
   cytoscape.use(kbCytoscape);
-  const config = cytoscapeConfig(containerID),
-    cytoscapeInstance = cytoscape(config);
+  const config = cytoscapeConfig(containerID);
+  const cytoscapeInstance = cytoscape(config);
 
   if (containerID) {
     cytoscapeInstance.layoutSelector = `#${containerID}--controls select[name=layout]`;

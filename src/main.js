@@ -11,7 +11,7 @@ import { activateControls } from './ui';
 export default function initKbCytoscape(datasetConfig) {
   window.kbase = {};
 
-  activateControls();
+  activateControls({ datasetConfig });
   initTables(datasetConfig);
   const cy = initCytoscape('cy');
 

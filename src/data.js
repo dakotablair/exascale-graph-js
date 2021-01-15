@@ -6,9 +6,39 @@ import { refreshTable } from './tables';
  *
  * @returns {object} dataObject
  */
-function dataObject() {
-  const color_palette = ['#210', '#c16', '#6ba', '#5ef', '#408', '#29d', '#f93', '#fdc'];
-  const label_palette = ['#fff', '#fff', '#000', '#000', '#fff', '#fff', '#000', '#000'];
+function dataObject(options) {
+  // annotate nodes and edges here
+  const { datasetConfig } = options;
+  const edge_type_names_array = datasetConfig.djornl_edge.edge_type.oneOf;
+  const edge_type_names = Object.fromEntries(
+    edge_type_names_array.map((edge_type) => [edge_type.const, edge_type.title])
+  );
+  const color_palette = [
+    '#009688',
+    '#d2232a',
+    '#037ac0',
+    '#f78e1e',
+    '#66489d',
+    '#c1cd23',
+    '#9d9389',
+    '#c7dbee',
+    '#ffd200',
+    '#72ccd2',
+    '#5e9732',
+  ];
+  const label_palette = [
+    '#ffffff',
+    '#ffffff',
+    '#ffffff',
+    '#000000',
+    '#ffffff',
+    '#000000',
+    '#000000',
+    '#000000',
+    '#000000',
+    '#000000',
+    '#ffffff',
+  ];
   const colors_assigned = {};
   const colors = (edge_type) => {
     if (edge_type in colors_assigned) {
@@ -43,6 +73,7 @@ function dataObject() {
           data: {
             ...el,
             edge_type_color,
+            edge_type_name: edge_type_names[el.edge_type],
             label_text_color: label_color,
           },
         };
@@ -59,12 +90,12 @@ function dataObject() {
  * @param {string[]} edgeTypes - array of edge types to filter on
  * @returns {object} data - parsed, organised data
  */
-function extractData(allData, edgeTypes = null) {
+function extractData(allData, edgeTypes = null, options) {
   const inputData = allData.pop();
 
   // keys are edges, nodes
 
-  const data = dataObject();
+  const data = dataObject(options);
 
   const nodeType = ['_from', '_to'];
 
@@ -127,7 +158,7 @@ function renderData(data) {
  * load one or more datasets by AJAX from a JSON file, extract and process the data,
  * and use it to populate the display
  */
-function loadData() {
+function loadData(options) {
   // d3.json, d3.text
   const dataFiles = [
     [
@@ -139,7 +170,7 @@ function loadData() {
     ],
   ];
   Promise.all(dataFiles.map((v) => d3[v[1]](v[0]))).then((allFileData) => {
-    const data = extractData(allFileData);
+    const data = extractData(allFileData, null, options);
     window.kbase.data = data;
     renderData(data);
   });

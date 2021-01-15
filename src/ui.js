@@ -5,9 +5,9 @@ import { loadData } from './data';
 /**
  * listen to click events on '#dataset--button' and load the data
  */
-function addDatasetSelector() {
+function addDatasetSelector(options) {
   $('#dataset--button').on('click keypress', () => {
-    loadData();
+    loadData(options);
     console.log('data loaded. cy:', window.kbase.cy); // eslint-disable-line no-console
   });
 }
@@ -31,9 +31,9 @@ function addLayoutSelector() {
  * add listeners to the UI elements in '#cy--controls' to enable graph interactivity
  * @function
  */
-function activateControls() {
+function activateControls(options) {
   addLayoutSelector();
-  addDatasetSelector();
+  addDatasetSelector(options);
 
   // response to button events
   $('#cy--controls').on('click keypress', 'button', (e) => {
